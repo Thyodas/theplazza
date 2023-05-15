@@ -1,0 +1,7 @@
+.idea
+.vscode
+a.out
+tmp/
+cmake-build-debug
+plazza
+CMakeLists.txt
