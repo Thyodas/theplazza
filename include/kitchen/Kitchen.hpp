@@ -9,6 +9,7 @@
 #include "IPizza.hpp"
 #include "PizzaFactory.hpp"
 #include "Config.hpp"
+#include "Cook.hpp"
 
 class Kitchen {
     public:
@@ -25,6 +26,7 @@ class Kitchen {
         PizzaFactory _pizzaFactory;
         Config _conf;
         std::map<Ingredients_e, int> _stock;
+        std::vector<Cook> _cooks;
         int _nbCooks = 0;
 
         void initStock() {
