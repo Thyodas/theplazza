@@ -5,7 +5,7 @@
 ** Mutex.cpp
 */
 
-#include "../include/Mutex.hpp"
+#include "encapsulation/Mutex.hpp"
 
 Mutex::Mutex()
 {

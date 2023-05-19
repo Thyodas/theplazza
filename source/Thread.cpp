@@ -5,7 +5,7 @@
 ** Thread.cpp
 */
 
-#include "../include/Thread.hpp"
+#include "encapsulation/Thread.hpp"
 
 Thread::Thread(Thread &&other) noexcept {
     _thread = std::move(other._thread);
