@@ -57,10 +57,10 @@ class Config {
         float getTimeMultiplier() const {
             return timeMultiplier;
         }
-        size_t getNbCooksPerKitchen() const {
+        int getNbCooksPerKitchen() const {
             return nbCooksPerKitchen;
         }
-        size_t getRefillIngredient() const {
+        double getRefillIngredient() const {
             return refillIngredient;
         }
     private:
@@ -69,5 +69,5 @@ class Config {
         bool isFilled = false;          // true if all arguments are filled
         float timeMultiplier = 0;       // 0.5 for /2, 1 for x1, 2 for x2, etc...
         int nbCooksPerKitchen = 0;   // number of cooks by kitchen
-        int refillIngredient = 0;    // number of ingredients to refill in millisecond
+        double refillIngredient = 0;    // number of ingredients to refill in millisecond
 };
