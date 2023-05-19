@@ -10,14 +10,13 @@
 #include "IMutex.hpp"
 
 class Mutex final : public IMutex {
-	public:
-		Mutex();
-		~Mutex() final = default;
+    public:
+        Mutex();
+        ~Mutex() final = default;
 
         void lock() final;
         bool trylock() final;
         void unlock() final;
-	protected:
-	private:
+    private:
         std::mutex _mutex;
 };
