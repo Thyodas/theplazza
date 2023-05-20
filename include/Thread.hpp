@@ -7,7 +7,7 @@
 #pragma once
 
 #include <thread>
-#include "IThread.hpp"
+#include "interfaces/IThread.hpp"
 
 class Thread final : public IThread{
     public:

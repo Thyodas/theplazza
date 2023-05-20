@@ -8,7 +8,7 @@
 
 class IMutex {
 	public:
-		virtual ~IMutex();
+		virtual ~IMutex() = default;
 
         virtual void lock() = 0;
         virtual bool trylock() = 0;

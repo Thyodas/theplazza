@@ -7,16 +7,16 @@
 #pragma once
 
 #include <mutex>
-#include "IMutex.hpp"
+#include "interfaces/IMutex.hpp"
 
-class Mutex final : public IMutex {
+class Mutex : public IMutex {
 	public:
 		Mutex();
-		~Mutex() final = default;
+		~Mutex() {};
 
-        void lock() final;
-        bool trylock() final;
-        void unlock() final;
+        void lock();
+        bool trylock();
+        void unlock();
 	protected:
 	private:
         std::mutex _mutex;
