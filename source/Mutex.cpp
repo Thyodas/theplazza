@@ -9,7 +9,7 @@
 
 Mutex::Mutex()
 {
-    _mutex;
+    //_mutex;
 }
 
 void Mutex::lock() {
@@ -18,6 +18,7 @@ void Mutex::lock() {
 
 bool Mutex::trylock() {
     _mutex.try_lock();
+    return true;
 }
 
 void Mutex::unlock() {
