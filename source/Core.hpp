@@ -18,19 +18,24 @@ namespace plazza {
         public:
             Core(utils::Config conf);
             ~Core() = default;
-            void getArgs(utils::Config conf);
+            /**
+             * @brief Main loop of the program
+             */
             void mainLoop();
-            void fillCommands();
-            void sendCommands();
-            void createKitchen();
 
         private:
+            /**
+             * @brief Function called when all the commands have been parsed
+             *
+             * @param commands
+             */
+            void sendCommands(std::vector<command_t> commands);
+            /**
+             * @brief Adds a new kitchen
+             */
+            void createKitchen();
             utils::Config _conf;
             Shell shell;
-            std::queue<command_t> _commands;
-            float _multiplier;
-            int _nbCooks;
-            double _refillTime;
     };
 }
 

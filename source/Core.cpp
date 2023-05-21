@@ -11,31 +11,15 @@ namespace plazza {
 
     Core::Core(utils::Config conf) : _conf(conf), shell() {}
 
-    void Core::getArgs(utils::Config conf)
-    {
-        _multiplier = conf.getTimeMultiplier();
-        _nbCooks = conf.getNbCooksPerKitchen();
-        _refillTime = conf.getRefillIngredient();
-    }
-
     void Core::mainLoop()
     {
         while (true) {
-            fillCommands();
-            sendCommands();
+            shell.extractCommand();
+            sendCommands(shell.getCommands());
         }
     }
 
-    void Core::fillCommands()
-    {
-        shell.getInput();
-        shell.extractCommand();
-        std::vector<command_t> commands = shell.getCommands();
-        for (auto &command : commands)
-            _commands.push(command);
-    }
-
-    void Core::sendCommands()
+    void Core::sendCommands(std::vector<command_t> commands)
     {
 
     }
