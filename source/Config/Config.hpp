@@ -13,61 +13,71 @@
 #include <iostream>
 
 namespace utils {
-
+    /**
+     * @brief Main class used to parse and store the command-line arguments
+     */
     class Config {
         public:
-            Config(int ac = 0, char **av = nullptr) : ac(ac), av(av) {
+            Config(int ac = 0, char **av = nullptr) : ac(ac), av(av)
+            {
                 if (ac == 4 && av != nullptr)
                     isFilled = true;
+                extractArgs();
             };
+
             ~Config() = default;
 
-            void checkFilled() {
-                if (!isFilled)
-                    throw std::runtime_error("Config is not filled");
-            }
-            bool errorHandling() {
-                checkFilled();
-                try {
-                    if (ac != 4)
-                        return false;
-                    if (std::stof(av[1]) <= 0)
-                        return false;
-                    if (std::stoi(av[2]) <= 0)
-                        return false;
-                    if (std::stoi(av[3]) <= 0)
-                        return false;
-                    return true;
-                } catch (std::invalid_argument &e) {
-                    std::cerr << "Invalid argument" << std::endl;
-                    return false;
-                } catch (std::out_of_range &e) {
-                    std::cerr << "One argument or more is out of range" << std::endl;
-                    return false;
-                }
-            }
-            void extractArgs() {
-                checkFilled();
-                timeMultiplier = std::stof(av[1]);
-                nbCooksPerKitchen = std::stoi(av[2]);
-                refillIngredient = std::stoi(av[3]);
-            }
-            void print() {
-                checkFilled();
-                std::cout << "timeMultiplier: " << timeMultiplier <<
-                " nbCooksPerKitchen: " << nbCooksPerKitchen <<
-                " refillIngredient: " << refillIngredient << std::endl;
-            }
-            float getTimeMultiplier() const {
+            /**
+             * @brief Get the Time Multiplier object
+             *
+             * @return float
+             */
+            float getTimeMultiplier() const
+            {
                 return timeMultiplier;
             }
-            int getNbCooksPerKitchen() const {
+
+            /**
+             * @brief Get the Nb Cooks Per Kitchen object
+             *
+             * @return int
+             */
+            int getNbCooksPerKitchen() const
+            {
                 return nbCooksPerKitchen;
             }
-            double getRefillIngredient() const {
+
+            /**
+             * @brief Get the Refill Ingredient object
+             *
+             * @return double
+             */
+            double getRefillIngredient() const
+            {
                 return refillIngredient;
             }
         private:
+            /**
+             * @brief Extracts and store command-line arguments
+             * It will throw an error if an argument is invalid or missing
+             */
+            void extractArgs()
+            {
+                if (!isFilled)
+                    throw std::runtime_error("Config is not filled");
+                try {
+                    if ((timeMultiplier = std::stof(av[1])) < 0)
+                        throw std::runtime_error("Invalid argument");
+                    if ((nbCooksPerKitchen = std::stoi(av[2])) <= 0)
+                        throw std::runtime_error("Invalid arguments");
+                    if ((refillIngredient = std::stoi(av[3])) < 0)
+                        throw std::runtime_error("Invalid argument");
+                } catch (std::invalid_argument &e) {
+                    throw std::runtime_error("Invalid argument");
+                } catch (std::out_of_range &e) {
+                    throw std::runtime_error("Invalid argument");
+                }
+            }
             int ac = 0;                     // number of arguments
             char **av = nullptr;            // arguments array
             bool isFilled = false;          // true if all arguments are filled
@@ -75,5 +85,12 @@ namespace utils {
             int nbCooksPerKitchen = 0;   // number of cooks by kitchen
             double refillIngredient = 0;    // number of ingredients to refill in millisecond
     };
+}
 
+std::ostream& operator<<(std::ostream& os, const utils::Config& cfg)
+{
+    os << "timeMultiplier: " << cfg.getTimeMultiplier() <<
+                " nbCooksPerKitchen: " << cfg.getNbCooksPerKitchen() <<
+                " refillIngredient: " << cfg.getRefillIngredient();
+    return os;
 }
