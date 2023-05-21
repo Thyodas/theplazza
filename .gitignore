@@ -2,6 +2,8 @@
 .vscode
 a.out
 tmp/
+obj/
+*.a
 cmake-build-debug
 plazza
 CMakeLists.txt
