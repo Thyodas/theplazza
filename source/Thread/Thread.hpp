@@ -11,22 +11,26 @@
 
 #include "IThread.hpp"
 
-class Thread final : public IThread {
-    public:
-        Thread() = delete;
-        Thread(Thread &&other) noexcept;
-        template<class Function, class... Args>
-        Thread(Function&& f, Args&&... args);
-        Thread( const Thread& ) = delete;
-        ~Thread() final = default;
+namespace thread {
 
-        bool joinable() const noexcept final;
-        std::thread::id getId() const noexcept final;
-        void join() final;
-        void detach() final;
-//        void swap(IThread& other) noexcept final;
-    private:
-        std::thread _thread;
-        std::thread::id _id;
-};
+    class Thread final : public IThread {
+        public:
+            Thread() = delete;
+            Thread(Thread &&other) noexcept;
+            template<class Function, class... Args>
+            Thread(Function&& f, Args&&... args);
+            Thread( const Thread& ) = delete;
+            ~Thread() final = default;
+
+            bool joinable() const noexcept final;
+            std::thread::id getId() const noexcept final;
+            void join() final;
+            void detach() final;
+    //        void swap(IThread& other) noexcept final;
+        private:
+            std::thread _thread;
+            std::thread::id _id;
+    };
+}
+
 

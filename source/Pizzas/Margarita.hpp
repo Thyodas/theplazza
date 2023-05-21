@@ -8,18 +8,19 @@
 #pragma once
 
 #include "APizza.hpp"
+namespace pizzas {
+    class Margarita final : public APizza {
+        public:
+            Margarita() = default;
+    //        ~Margarita();
 
-class Margarita final : public APizza {
-    public:
-        Margarita() = default;
-//        ~Margarita();
-
-    private:
-        PizzaType _type = PizzaType::Margarita;
-        std::vector<Ingredients_e> _ingredients = {
-            Doe,
-            Tomato,
-            Gruyere
-        };
-        double _bakeTime = 1;
-};
+        private:
+            PizzaType _type = PizzaType::MARGARITA;
+            std::vector<Ingredients_e> _ingredients = {
+                Doe,
+                Tomato,
+                Gruyere
+            };
+            double _bakeTime = 1;
+    };
+}

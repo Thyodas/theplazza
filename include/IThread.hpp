@@ -9,13 +9,15 @@
 
 #include <thread>
 
-class IThread {
-    public:
-        virtual ~IThread() = default;
+namespace thread {
+    class IThread {
+        public:
+            virtual ~IThread() = default;
 
-        virtual bool joinable() const noexcept = 0;
-        virtual std::thread::id getId() const noexcept = 0;
-        virtual void join() = 0;
-        virtual void detach() = 0;
-//        virtual void swap(IThread& other) noexcept = 0;
-};
+            virtual bool joinable() const noexcept = 0;
+            virtual std::thread::id getId() const noexcept = 0;
+            virtual void join() = 0;
+            virtual void detach() = 0;
+    //        virtual void swap(IThread& other) noexcept = 0;
+    };
+}

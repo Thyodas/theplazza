@@ -12,7 +12,7 @@
 
 int main(int ac, char **av)
 {
-    Config conf(ac, av);
+    utils::Config conf(ac, av);
     try {
         if (!conf.errorHandling())
             return 84;
@@ -22,6 +22,6 @@ int main(int ac, char **av)
         std::cerr << e.what() << std::endl;
         return 84;
     }
-    Core core(conf);
+    plazza::Core core(conf);
     return 0;
 }

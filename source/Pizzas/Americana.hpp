@@ -9,18 +9,20 @@
 
 #include "APizza.hpp"
 
-class Americana final : public APizza {
-	public:
-		Americana() = default;
-//		~Americana() final = default;
+namespace pizzas {
+    class Americana final : public APizza {
+        public:
+            Americana() = default;
+    //		~Americana() final = default;
 
-    private:
-        PizzaType _type = PizzaType::Americana;
-        std::vector<Ingredients_e> _ingredients = {
-            Doe,
-            Tomato,
-            Gruyere,
-            Steak
-        };
-        double _bakeTime = 2;
-};
+        private:
+            PizzaType _type = PizzaType::AMERICANA;
+            std::vector<Ingredients_e> _ingredients = {
+                Doe,
+                Tomato,
+                Gruyere,
+                Steak
+            };
+            double _bakeTime = 2;
+    };
+}

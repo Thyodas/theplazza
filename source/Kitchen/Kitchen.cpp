@@ -9,20 +9,25 @@
 #include <ranges>
 #include "Kitchen.hpp"
 
-void Kitchen::startKitchen() {
+namespace plazza {
 
-}
+    void Kitchen::startKitchen() {
 
-bool Kitchen::tryGetIngredients(const IPizza& pizza) const
-{
-    return std::ranges::all_of(pizza.getIngredients(), [&](auto &ingredient) {
-        return _stock.at(ingredient) > 0;
-    });
-}
-
-void Kitchen::takeIngredients(const IPizza& pizza)
-{
-    for (auto &ingredient : pizza.getIngredients()) {
-        _stock.at(ingredient) -= 1;
     }
+
+    bool Kitchen::tryGetIngredients(const pizzas::IPizza& pizza) const
+    {
+        return std::ranges::all_of(pizza.getIngredients(), [&](auto &ingredient) {
+            return _stock.at(ingredient) > 0;
+        });
+    }
+
+    void Kitchen::takeIngredients(const pizzas::IPizza& pizza)
+    {
+        for (auto &ingredient : pizza.getIngredients()) {
+            _stock.at(ingredient) -= 1;
+        }
+    }
+
 }
+

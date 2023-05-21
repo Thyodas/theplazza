@@ -6,21 +6,23 @@
 */
 
 #include "Mutex.hpp"
+namespace thread {
 
-Mutex::Mutex()
-{
-    //_mutex;
-}
+    Mutex::Mutex()
+    {
+        //_mutex;
+    }
 
-void Mutex::lock() {
-    _mutex.lock();
-}
+    void Mutex::lock() {
+        _mutex.lock();
+    }
 
-bool Mutex::trylock() {
-    _mutex.try_lock();
-    return true;
-}
+    bool Mutex::trylock() {
+        _mutex.try_lock();
+        return true;
+    }
 
-void Mutex::unlock() {
-    _mutex.unlock();
+    void Mutex::unlock() {
+        _mutex.unlock();
+    }
 }

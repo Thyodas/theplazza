@@ -10,14 +10,17 @@
 #include <mutex>
 #include "IMutex.hpp"
 
-class Mutex final : public IMutex {
-    public:
-        Mutex();
-        ~Mutex() final = default;
+namespace thread {
+    class Mutex final : public IMutex {
+        public:
+            Mutex();
+            ~Mutex() final = default;
 
-        void lock() final;
-        bool trylock() final;
-        void unlock() final;
-    private:
-        std::mutex _mutex;
-};
+            void lock() final;
+            bool trylock() final;
+            void unlock() final;
+        private:
+            std::mutex _mutex;
+    };
+}
+

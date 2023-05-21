@@ -9,19 +9,21 @@
 
 #include "APizza.hpp"
 
-class Fantasia final : public APizza {
-    public:
-        Fantasia() = default;
-//        ~Fantasia();
+namespace pizzas {
+    class Fantasia final : public APizza {
+        public:
+            Fantasia() = default;
+    //        ~Fantasia();
 
-    private:
-        PizzaType _type = PizzaType::Fantasia;
-        std::vector<Ingredients_e> _ingredients = {
-            Doe,
-            Tomato,
-            Eggplant,
-            GoatCheese,
-            ChiefLove
-        };
-        double _bakeTime = 4;
-};
+        private:
+            PizzaType _type = PizzaType::FANTASIA;
+            std::vector<Ingredients_e> _ingredients = {
+                Doe,
+                Tomato,
+                Eggplant,
+                GoatCheese,
+                ChiefLove
+            };
+            double _bakeTime = 4;
+    };
+}

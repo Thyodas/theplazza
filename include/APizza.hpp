@@ -9,27 +9,31 @@
 
 #include "IPizza.hpp"
 
-class APizza : public IPizza {
-    public:
-        APizza() = default;
-        ~APizza() override = default;
+namespace pizzas {
 
-    std::vector<Ingredients_e> getIngredients() const override
-    {
-        return _ingredients;
-    }
+    class APizza : public IPizza {
+        public:
+            APizza() = default;
+            ~APizza() override = default;
 
-    double getBakeTime() const override {
-        return _bakeTime;
-    }
+        std::vector<Ingredients_e> getIngredients() const override
+        {
+            return _ingredients;
+        }
 
-    short pack() const final {
-        return short(_type << 8 | _size);
-    }
+        double getBakeTime() const override {
+            return _bakeTime;
+        }
 
-    protected:
-        PizzaType _type = PizzaType::REGINA;
-        PizzaSize _size = PizzaSize::S;
-        std::vector<Ingredients_e> _ingredients = {};
-        double _bakeTime = 0;
-};
+        short pack() const final {
+            return short(_type << 8 | _size);
+        }
+
+        protected:
+            PizzaType _type = PizzaType::REGINA;
+            PizzaSize _size = PizzaSize::S;
+            std::vector<Ingredients_e> _ingredients = {};
+            double _bakeTime = 0;
+    };
+}
+

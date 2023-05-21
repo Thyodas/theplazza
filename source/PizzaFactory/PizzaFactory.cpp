@@ -12,25 +12,30 @@
 #include "../Pizzas/Margarita.hpp"
 #include "../Pizzas/Regina.hpp"
 
-template<typename T>
-void PizzaFactory::registerComponent(const PizzaType &type)
-{
-    constructorMap[type] = [](const PizzaSize size) {
-        std::make_unique<T>(size);
-    };
+namespace pizzas {
+
+    template<typename T>
+    void PizzaFactory::registerComponent(const PizzaType &type)
+    {
+        constructorMap[type] = [](const PizzaSize size) {
+            std::make_unique<T>(size);
+        };
+    }
+
+    std::unique_ptr<IPizza> PizzaFactory::createPizza(const PizzaType type, const PizzaSize size) const
+    {
+        if (constructorMap.find(type) == constructorMap.end())
+            throw exception::UnknownTypeException("Unknown type");
+        return constructorMap.at(type)(size);
+    }
+
+    PizzaFactory::PizzaFactory()
+    {
+        registerComponent<Americana>(AMERICANA);
+        registerComponent<Fantasia>(FANTASIA);
+        registerComponent<Margarita>(MARGARITA);
+        registerComponent<Regina>(REGINA);
+    }
+
 }
 
-std::unique_ptr<IPizza> PizzaFactory::createPizza(const PizzaType type, const PizzaSize size) const
-{
-    if (constructorMap.find(type) == constructorMap.end())
-        throw exception::UnknownTypeException("Unknown type");
-    return constructorMap.at(type)(size);
-}
-
-PizzaFactory::PizzaFactory()
-{
-    registerComponent<Americana>(AMERICANA);
-    registerComponent<Fantasia>(FANTASIA);
-    registerComponent<Margarita>(MARGARITA);
-    registerComponent<Regina>(REGINA);
-}
