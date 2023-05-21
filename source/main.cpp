@@ -12,16 +12,13 @@
 
 int main(int ac, char **av)
 {
-    utils::Config conf(ac, av);
     try {
-        if (!conf.errorHandling())
-            return 84;
-        conf.extractArgs();
-        conf.print();
+        utils::Config conf(ac, av);
+        std::cout << conf << std::endl;
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;
         return 84;
     }
-    plazza::Core core(conf);
+    //plazza::Core core(conf);
     return 0;
 }
