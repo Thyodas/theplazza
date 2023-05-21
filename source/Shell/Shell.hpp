@@ -15,6 +15,11 @@
 #include "IPizza.hpp"
 
 namespace plazza {
+
+    /**
+     * @brief Struct defining a command
+     * It contains the pizza type, size and quantity
+     */
     typedef struct command_s {
         command_s(pizzas::PizzaType type, pizzas::PizzaSize size, size_t quantity)
             : type(type), size(size), quantity(quantity) {};
@@ -25,29 +30,50 @@ namespace plazza {
         size_t quantity;
     } command_t;
 
+    const std::map<std::string, pizzas::PizzaType> _typeMap = {
+            {"regina",    pizzas::REGINA},
+            {"margarita", pizzas::MARGARITA},
+            {"americana", pizzas::AMERICANA},
+            {"fantasia",  pizzas::FANTASIA}
+    };
+    const std::map<std::string, pizzas::PizzaSize> _sizeMap = {
+        {"S", pizzas::S},
+        {"M", pizzas::M},
+        {"L", pizzas::L},
+        {"XL", pizzas::XL},
+        {"XXL", pizzas::XXL}
+    };
+
+    /**
+     * @brief Main class that represents the reception
+     */
     class Shell {
         public:
             Shell();
             ~Shell() = default;
 
-            void getInput();
+            /**
+             * @brief This function will fill the commands vector based on
+             * the input parsed before
+             * This function should be called after getInput
+             */
             void extractCommand();
-            const std::vector<command_t> &getCommands() const;
+            /**
+             * @brief Get the Commands object
+             *
+             * @return const std::vector<command_t>&
+             */
+            std::vector<command_t> getCommands() const;
         private:
-            std::vector<std::string> _input;
+            /**
+             * @brief Parse the stdin and split the text based on ; separators
+             * and then returns it
+             * This function should be called first
+             *
+             * @return std::vector<std::string>&
+             */
+            std::vector<std::string> getInput();
+
             std::vector<command_t> _commands;
-            std::map<std::string, pizzas::PizzaType> _typeMap = {
-                    {"regina",    pizzas::REGINA},
-                    {"margarita", pizzas::MARGARITA},
-                    {"americana", pizzas::AMERICANA},
-                    {"fantasia",  pizzas::FANTASIA}
-            };
-            std::map<std::string, pizzas::PizzaSize> _sizeMap = {
-                {"S", pizzas::S},
-                {"M", pizzas::M},
-                {"L", pizzas::L},
-                {"XL", pizzas::XL},
-                {"XXL", pizzas::XXL}
-            };
     };
 }
