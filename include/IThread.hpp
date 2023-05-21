@@ -4,6 +4,7 @@
 ** File description:
 ** IThread
 */
+
 #pragma once
 
 #include <thread>
@@ -17,6 +18,4 @@ class IThread {
         virtual void join() = 0;
         virtual void detach() = 0;
 //        virtual void swap(IThread& other) noexcept = 0;
-    protected:
-    private:
 };

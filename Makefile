@@ -7,11 +7,15 @@
 
 OBJ1 := main.o \
 		Core.o \
-		Mutex.o \
-		Shell.o \
-		Thread.o
+		Mutex/Mutex.o \
+		Shell/Shell.o \
+		Thread/Thread.o \
+		Kitchen/Kitchen.o \
+		Cook/Cook.o \
+		Config/Config.o
 
-C_FLAGS := -Wall -Wextra -g
+
+C_FLAGS := -Wall -Wextra -g -std=c++20
 CC := g++
 RM := rm
 LINKFLAGS := -lguru

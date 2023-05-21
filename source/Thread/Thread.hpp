@@ -4,12 +4,14 @@
 ** File description:
 ** Thread
 */
+
 #pragma once
 
 #include <thread>
-#include "interfaces/IThread.hpp"
 
-class Thread final : public IThread{
+#include "IThread.hpp"
+
+class Thread final : public IThread {
     public:
         Thread() = delete;
         Thread(Thread &&other) noexcept;
@@ -23,7 +25,6 @@ class Thread final : public IThread{
         void join() final;
         void detach() final;
 //        void swap(IThread& other) noexcept final;
-    protected:
     private:
         std::thread _thread;
         std::thread::id _id;

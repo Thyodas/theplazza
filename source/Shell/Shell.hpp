@@ -4,6 +4,7 @@
 ** File description:
 ** Shell
 */
+
 #pragma once
 
 #include <string>
@@ -11,25 +12,11 @@
 #include <map>
 #include <iostream>
 
-enum PizzaType {
-    Regina = 1,
-    Margarita = 2,
-    Americana = 4,
-    Fantasia = 8,
-    UNDEFINED = 16
-};
-
-enum PizzaSize {
-    S = 1,
-    M = 2,
-    L = 4,
-    XL = 8,
-    XXL = 16
-};
+#include "IPizza.hpp"
 
 typedef struct command_s {
     command_s(PizzaType type, PizzaSize size, size_t quantity) : type(type), size(size), quantity(quantity) {};
-    command_s() { type = UNDEFINED; size = S; quantity = 0; }
+    command_s() : type(UNDEFINED), size(S), quantity(0) {}
     void print() const { std::cout << "Type: " << type << " Size: " << size << " Quantity: " << quantity << std::endl; }
     PizzaType type;
     PizzaSize size;
@@ -43,15 +30,15 @@ class Shell {
 
         void getInput();
         void extractCommand();
-    protected:
+        const std::vector<command_t> &getCommands() const;
     private:
         std::vector<std::string> _input;
         std::vector<command_t> _commands;
         std::map<std::string, PizzaType> _typeMap = {
-                {"regina",    Regina},
-                {"margarita", Margarita},
-                {"americana", Americana},
-                {"fantasia",  Fantasia}
+                {"regina",    REGINA},
+                {"margarita", MARGARITA},
+                {"americana", AMERICANA},
+                {"fantasia",  FANTASIA}
         };
         std::map<std::string, PizzaSize> _sizeMap = {
             {"S", S},
@@ -60,6 +47,4 @@ class Shell {
             {"XL", XL},
             {"XXL", XXL}
         };
-public:
-    const std::vector<command_t> &getCommands() const;
 };

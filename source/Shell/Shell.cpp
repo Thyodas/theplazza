@@ -9,7 +9,8 @@
 #include <vector>
 #include <sstream>
 #include <regex>
-#include "../include/Shell.hpp"
+
+#include "Shell.hpp"
 
 Shell::Shell() = default;
 

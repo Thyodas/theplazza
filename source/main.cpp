@@ -6,8 +6,9 @@
 */
 
 #include <iostream>
-#include "Shell.hpp"
-#include "Config.hpp"
+
+#include "Config/Config.hpp"
+#include "Core.hpp"
 
 int main(int ac, char **av)
 {
@@ -21,13 +22,6 @@ int main(int ac, char **av)
         std::cerr << e.what() << std::endl;
         return 84;
     }
-    Shell shell;
-    while (true) {
-        shell.getInput();
-        shell.extractCommand();
-        for (const auto &i: shell.getCommands()) {
-            i.print();
-        }
-    }
+    Core core(conf);
     return 0;
 }
