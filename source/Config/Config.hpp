@@ -56,6 +56,14 @@ namespace utils {
             {
                 return refillIngredient;
             }
+
+            friend std::ostream& operator<<(std::ostream& os, const utils::Config& cfg)
+            {
+                os << "timeMultiplier: " << cfg.getTimeMultiplier() <<
+                            " nbCooksPerKitchen: " << cfg.getNbCooksPerKitchen() <<
+                            " refillIngredient: " << cfg.getRefillIngredient();
+                return os;
+            }
         private:
             /**
              * @brief Extracts and store command-line arguments
@@ -85,12 +93,5 @@ namespace utils {
             int nbCooksPerKitchen = 0;   // number of cooks by kitchen
             double refillIngredient = 0;    // number of ingredients to refill in millisecond
     };
-}
 
-std::ostream& operator<<(std::ostream& os, const utils::Config& cfg)
-{
-    os << "timeMultiplier: " << cfg.getTimeMultiplier() <<
-                " nbCooksPerKitchen: " << cfg.getNbCooksPerKitchen() <<
-                " refillIngredient: " << cfg.getRefillIngredient();
-    return os;
 }
