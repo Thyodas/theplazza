@@ -11,6 +11,10 @@
 
 namespace pizzas {
 
+    /**
+     * @brief Main abstract class implementing the basic interface
+     * methods.
+     */
     class APizza : public IPizza {
         public:
             APizza() = default;
@@ -21,11 +25,13 @@ namespace pizzas {
             return _ingredients;
         }
 
-        double getBakeTime() const override {
+        double getBakeTime() const override
+        {
             return _bakeTime;
         }
 
-        short pack() const final {
+        short pack() const final
+        {
             return short(_type << 8 | _size);
         }
 

@@ -10,6 +10,10 @@
 #include <stdexcept>
 
 namespace exception {
+    /**
+     * @brief Abstract class defining all our exceptions
+     *
+     */
     class AException : public std::exception {
         public:
             [[nodiscard]] const char *what() const noexcept override
@@ -21,6 +25,10 @@ namespace exception {
             std::string _message;
     };
 
+    /**
+     * @brief Exception class used when the mentionned pizza type
+     * is undefined
+     */
     class UnknownTypeException : public AException {
         public:
             explicit UnknownTypeException(const std::string &message) : AException(message) {};

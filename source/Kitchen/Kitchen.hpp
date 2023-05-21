@@ -16,6 +16,9 @@
 #include "../Cook/Cook.hpp"
 
 namespace plazza {
+    /**
+     * @brief Main class used for the kitchens
+     */
     class Kitchen {
         public:
             Kitchen(utils::Config conf, int nbCooks = 0) : _pizzaFactory(), _conf(conf), _nbCooks(nbCooks) {
@@ -24,8 +27,21 @@ namespace plazza {
             };
             ~Kitchen() = default;
 
+            /**
+             * @brief Starts the kitchen
+             */
             void startKitchen();
+            /**
+             * @brief Returns true if the ingredient of the pizza are
+             * available in the stock
+             * @return true
+             * @return false
+             */
             bool tryGetIngredients(const pizzas::IPizza& pizza) const;
+            /**
+             * @brief Remove the ingredient of the pizza from the stock
+             * @param pizza
+             */
             void takeIngredients(const pizzas::IPizza& pizza);
         private:
             pizzas::PizzaFactory _pizzaFactory;
@@ -34,6 +50,9 @@ namespace plazza {
             std::vector<Cook> _cooks;
             int _nbCooks = 0;
 
+            /**
+             * @brief Initalizes all the stocks inside the kithens
+             */
             void initStock() {
                 _stock[pizzas::Doe] = 5;
                 _stock[pizzas::Tomato] = 5;
@@ -45,6 +64,10 @@ namespace plazza {
                 _stock[pizzas::GoatCheese] = 5;
                 _stock[pizzas::ChiefLove] = 5;
             }
+            /**
+             * @brief Function called every N seconds to refill the ingredients
+             * stocks
+             */
             void refillStock() {
                 for (auto &ingredient : _stock)
                         ingredient.second += 1;
