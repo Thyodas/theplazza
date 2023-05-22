@@ -31,13 +31,14 @@ namespace plazza {
              * @brief Starts the kitchen
              */
             void startKitchen();
+
             /**
              * @brief Returns true if the ingredient of the pizza are
              * available in the stock
-             * @return true
-             * @return false
+             * @return true if the ingredients are available, false otherwise
              */
             bool tryGetIngredients(const pizzas::IPizza& pizza) const;
+
             /**
              * @brief Remove the ingredient of the pizza from the stock
              * @param pizza
@@ -51,7 +52,7 @@ namespace plazza {
             int _nbCooks = 0;
 
             /**
-             * @brief Initalizes all the stocks inside the kithens
+             * @brief Initalizes all the stocks inside the kitchens
              */
             void initStock() {
                 _stock[pizzas::Doe] = 5;
