@@ -12,7 +12,7 @@ namespace pizzas {
     class Margarita final : public APizza {
         public:
             Margarita() = default;
-    //        ~Margarita();
+            ~Margarita() final = default;
 
         private:
             PizzaType _type = PizzaType::MARGARITA;

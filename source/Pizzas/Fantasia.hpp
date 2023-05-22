@@ -13,7 +13,7 @@ namespace pizzas {
     class Fantasia final : public APizza {
         public:
             Fantasia() = default;
-    //        ~Fantasia();
+            ~Fantasia() final = default;
 
         private:
             PizzaType _type = PizzaType::FANTASIA;

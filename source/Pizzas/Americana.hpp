@@ -13,7 +13,7 @@ namespace pizzas {
     class Americana final : public APizza {
         public:
             Americana() = default;
-    //		~Americana() final = default;
+            ~Americana() final = default;
 
         private:
             PizzaType _type = PizzaType::AMERICANA;
