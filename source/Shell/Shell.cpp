@@ -33,18 +33,19 @@ namespace plazza {
 
     void Shell::extractCommand()
     {
-        _commands.clear();
+        std::queue<command_t> empty;
+        std::swap(empty, _commands);
         std::vector<std::string> inputs = getInput();
         std::regex regex(R"(([a-zA-Z]+)\s+(S|M|L|XL|XXL)\s+x(\d{1,}))");
         try {
             for (const auto & i : inputs) {
                 command_t command;
-                std::smatch match;
-                if (std::regex_search(i, match, regex)) {
-                    command.type = _typeMap.at(match[1]);
-                    command.size = _sizeMap.at(match[2]);
-                    command.quantity = std::stoi(match[3]);
-                    _commands.emplace_back(command);
+                std::smatch smash;
+                if (std::regex_search(i, smash, regex)) {
+                    command.type = _typeMap.at(smash[1]);
+                    command.size = _sizeMap.at(smash[2]);
+                    command.quantity = std::stoi(smash[3]);
+                    _commands.push(command);
                 } else
                     std::cerr << "Invalid command: " << i << std::endl;
             }
@@ -55,7 +56,7 @@ namespace plazza {
         }
     }
 
-    std::vector<command_t> Shell::getCommands() const
+    std::queue<command_t> Shell::getCommands() const
     {
         return _commands;
     }

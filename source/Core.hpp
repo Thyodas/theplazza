@@ -8,7 +8,10 @@
 #pragma once
 
 #include <queue>
-
+#include <vector>
+#include <unistd.h>
+#include <mqueue.h>
+#include "Kitchen/Kitchen.hpp"
 #include "Config/Config.hpp"
 #include "Shell/Shell.hpp"
 
@@ -29,13 +32,24 @@ namespace plazza {
              *
              * @param commands
              */
-            void sendCommands(std::vector<command_t> commands);
+            void sendCommands(std::queue<command_t> commands);
             /**
              * @brief Adds a new kitchen
              */
             void createKitchen();
+            /**
+             * @brief Kills all the kitchens
+             * @return true if all the kitchens have been killed, false otherwise
+             */
+            void killAllKitchens();
+            /**
+             * @brief Initializes the message queue
+             */
+            void initMQ();
             utils::Config _conf;
             Shell shell;
+            std::vector<pid_t> _kitchens;
+            mqd_t _mq;
     };
 }
 

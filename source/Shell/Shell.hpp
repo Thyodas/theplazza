@@ -9,6 +9,7 @@
 
 #include <string>
 #include <vector>
+#include <queue>
 #include <map>
 #include <iostream>
 
@@ -63,7 +64,7 @@ namespace plazza {
              *
              * @return const std::vector<command_t>&
              */
-            std::vector<command_t> getCommands() const;
+            std::queue<command_t> getCommands() const;
         private:
             /**
              * @brief Parse the stdin and split the text based on ; separators
@@ -74,6 +75,6 @@ namespace plazza {
              */
             std::vector<std::string> getInput();
 
-            std::vector<command_t> _commands;
+            std::queue<command_t> _commands;
     };
 }
