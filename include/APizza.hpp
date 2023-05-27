@@ -18,6 +18,7 @@ namespace pizzas {
     class APizza : public IPizza {
         public:
             APizza() = default;
+            APizza(const PizzaSize &size) : _size(size) {};
             ~APizza() override = default;
 
         std::vector<Ingredients_e> getIngredients() const override

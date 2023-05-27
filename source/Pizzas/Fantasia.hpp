@@ -13,6 +13,7 @@ namespace pizzas {
     class Fantasia final : public APizza {
         public:
             Fantasia() = default;
+            Fantasia(const PizzaSize &size) : APizza(size) {};
             ~Fantasia() final = default;
 
         private:

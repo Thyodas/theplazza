@@ -7,6 +7,7 @@
 
 #include "PizzaFactory.hpp"
 
+#include "../include/IPizza.hpp"
 #include "../Pizzas/Americana.hpp"
 #include "../Pizzas/Fantasia.hpp"
 #include "../Pizzas/Margarita.hpp"
@@ -18,7 +19,7 @@ namespace pizzas {
     void PizzaFactory::registerComponent(const PizzaType &type)
     {
         constructorMap[type] = [](const PizzaSize size) {
-            std::make_unique<T>(size);
+            return std::make_unique<T>(size);
         };
     }
 

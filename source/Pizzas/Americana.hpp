@@ -13,6 +13,7 @@ namespace pizzas {
     class Americana final : public APizza {
         public:
             Americana() = default;
+            Americana(const PizzaSize &size) : APizza(size) {};
             ~Americana() final = default;
 
         private:

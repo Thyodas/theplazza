@@ -47,4 +47,3 @@ namespace pizzas {
             std::unordered_map<PizzaType, std::function<std::unique_ptr<IPizza>(const PizzaSize size)>> constructorMap;
     };
 }
-

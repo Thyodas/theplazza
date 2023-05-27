@@ -12,6 +12,7 @@ namespace pizzas {
     class Regina final : public APizza {
         public:
             Regina() = default;
+            Regina(const PizzaSize &size) : APizza(size) {};
             ~Regina() final = default;
 
         private:

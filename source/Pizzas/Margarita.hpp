@@ -12,6 +12,7 @@ namespace pizzas {
     class Margarita final : public APizza {
         public:
             Margarita() = default;
+            Margarita(const PizzaSize &size) : APizza(size) {};
             ~Margarita() final = default;
 
         private:
