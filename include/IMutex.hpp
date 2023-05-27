@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <mutex>
+
 namespace thread {
     /**
      * @brief Main interface for encapsulating mutexes
@@ -26,10 +28,13 @@ namespace thread {
              * @return true 
              * @return false 
              */
-            virtual bool trylock() = 0;
+            virtual bool tryLock() = 0;
             /**
              * @brief Used to unlokc the mutex
              */
             virtual void unlock() = 0;
+
+            virtual operator std::mutex&() = 0;
+
     };
 }

@@ -9,3 +9,5 @@ plazza
 CMakeLists.txt
 
 build/
+.DS_Store
+*.pdf

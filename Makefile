@@ -14,6 +14,9 @@ OBJ1 := main.o \
 		Cook/Cook.o \
 		Config/Config.o \
 		PizzaFactory/PizzaFactory.o \
+		ThreadPool/ThreadPool.o	\
+		ConditionVariable/ConditionVariable.o \
+		UniqueLock/UniqueLock.o \
 
 
 C_FLAGS := -Wall -Wextra -g -std=c++2a

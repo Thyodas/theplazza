@@ -13,11 +13,6 @@ namespace thread {
         _thread = std::move(other._thread);
     }
 
-    template<class Function, class... Args>
-    Thread::Thread(Function &&f, Args &&... args) {
-        _thread = std::thread(f, args...);
-    }
-
     std::thread::id Thread::getId() const noexcept{
         return _thread.get_id();
     }

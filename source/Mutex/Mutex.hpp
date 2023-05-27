@@ -13,12 +13,14 @@
 namespace thread {
     class Mutex final : public IMutex {
         public:
-            Mutex();
+            Mutex() = default;
             ~Mutex() final = default;
 
             void lock() final;
-            bool trylock() final;
+            bool tryLock() final;
             void unlock() final;
+
+            explicit operator std::mutex&() final;
         private:
             std::mutex _mutex;
     };

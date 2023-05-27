@@ -17,8 +17,10 @@ namespace thread {
         public:
             Thread() = delete;
             Thread(Thread &&other) noexcept;
+
             template<class Function, class... Args>
-            Thread(Function&& f, Args&&... args);
+            explicit Thread(Function&& f, Args&&... args);
+
             Thread( const Thread& ) = delete;
             ~Thread() final = default;
 
@@ -29,8 +31,13 @@ namespace thread {
     //        void swap(IThread& other) noexcept final;
         private:
             std::thread _thread;
-            std::thread::id _id;
     };
+
+    template<class Function, class... Args>
+    Thread::Thread(Function &&f, Args &&... args) {
+        _thread = std::thread(f, args...);
+    }
+
 }
 
 
