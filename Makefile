@@ -12,10 +12,11 @@ OBJ1 := main.o \
 		Thread/Thread.o \
 		Kitchen/Kitchen.o \
 		Cook/Cook.o \
-		Config/Config.o
+		Config/Config.o \
+		PizzaFactory/PizzaFactory.o \
 
 
-C_FLAGS := -Wall -Wextra -g -std=c++20
+C_FLAGS := -Wall -Wextra -g -std=c++2a
 CC := g++
 RM := rm
 LINKFLAGS := -lguru
