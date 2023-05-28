@@ -62,7 +62,7 @@ namespace plazza {
             std::this_thread::sleep_for(
                 std::chrono::milliseconds(static_cast<long long>(time_multiplier * bake_time * 1000))
             );
-            std::cout << "\r\rPizza " << pizza_name << " is done!" << std::endl << "> " << std::endl;
+            std::cout << "\r\rPizza " << pizza_name << " is done!" << std::endl << "> " << std::flush;
             LOG_F(INFO, "Pizza %s is done!", pizza_name.c_str());
         });
     }

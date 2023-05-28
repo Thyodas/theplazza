@@ -25,6 +25,7 @@ int main(int ac, char **av)
             conf.getTimeMultiplier(), conf.getNbCooksPerKitchen(), conf.getRefillIngredient());
         plazza::Core core(conf);
         core.mainLoop();
+        loguru::shutdown();
     } catch (std::exception &e) {
         std::cerr << e.what() << std::endl;
         return 84;
