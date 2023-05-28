@@ -12,12 +12,10 @@ OBJ1 := main.o \
 		Thread/Thread.o \
 		Kitchen/Kitchen.o \
 		Cook/Cook.o \
-		Config/Config.o \
 		PizzaFactory/PizzaFactory.o \
 		ThreadPool/ThreadPool.o	\
 		ConditionVariable/ConditionVariable.o \
 		UniqueLock/UniqueLock.o \
-		MessageQ/MessageQ.o \
 
 
 C_FLAGS := -Wall -Wextra -g -std=c++2a
