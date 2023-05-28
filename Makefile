@@ -17,6 +17,7 @@ OBJ1 := main.o \
 		ThreadPool/ThreadPool.o	\
 		ConditionVariable/ConditionVariable.o \
 		UniqueLock/UniqueLock.o \
+		MessageQ/MessageQ.o \
 
 
 C_FLAGS := -Wall -Wextra -g -std=c++2a

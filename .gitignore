@@ -6,7 +6,6 @@ obj/
 *.a
 cmake-build-debug
 plazza
-CMakeLists.txt
 
 build/
 .DS_Store

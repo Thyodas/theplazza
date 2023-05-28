@@ -14,6 +14,7 @@
 #include "Kitchen/Kitchen.hpp"
 #include "Config/Config.hpp"
 #include "Shell/Shell.hpp"
+#include "MessageQ/MessageQ.hpp"
 
 namespace plazza {
 
@@ -41,15 +42,12 @@ namespace plazza {
              * @brief Kills all the kitchens
              * @return true if all the kitchens have been killed, false otherwise
              */
-            void killAllKitchens();
-            /**
-             * @brief Initializes the message queue
-             */
-            void initMQ();
+//            void killAllKitchens();
             utils::Config _conf;
             Shell shell;
-            std::vector<pid_t> _kitchens;
-            mqd_t _mq;
+            IPC::MessageQ<command_t> _pizzaMq;
+            IPC::MessageQ<kitchenStatus_t> _statusMq;
+            Kitchen _kitchen;
+            int _lastKitchenId = 0;
     };
 }
-

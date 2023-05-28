@@ -91,7 +91,7 @@ namespace utils {
             bool isFilled = false;          // true if all arguments are filled
             float timeMultiplier = 0;       // 0.5 for /2, 1 for x1, 2 for x2, etc...
             int nbCooksPerKitchen = 0;   // number of cooks by kitchen
-            double refillIngredient = 0;    // number of ingredients to refill in millisecond
+            double refillIngredient = 0;    // time between two refill in millisecond
     };
 
 }
