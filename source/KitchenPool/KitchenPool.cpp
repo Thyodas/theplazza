@@ -6,6 +6,7 @@
 */
 
 #include "KitchenPool.hpp"
+#include "loguru.hpp"
 
 namespace plazza {
     KitchenPool::KitchenPool(utils::Config config, const IPC::MessageQ<kitchenStatus_t> &statusMq)
@@ -19,19 +20,19 @@ namespace plazza {
             destroyKitchen(status.id);
             return;
         }
-        auto it = std::find_if(_kitchens.begin(), _kitchens.end(), [status](const Kitchen& kitchen) {
-            return kitchen.getId() == status.id;
+        auto it = std::find_if(_kitchens.begin(), _kitchens.end(), [status](const auto& kitchen) {
+            return kitchen->getId() == status.id;
         });
         if (it == _kitchens.end())
             return;
-        it->updateStatus(status);
+        (*it)->updateStatus(status);
     }
 
     void KitchenPool::sendPizza(const pizzas::IPizza &pizza)
     {
         for (const auto &item: _kitchens) {
-            if (item.tryGetIngredients(pizza)) {
-                item.sendPizza(pizza);
+            if (item->canTakePizza(pizza)) {
+                item->sendPizza(pizza);
                 return;
             }
         }
@@ -41,26 +42,58 @@ namespace plazza {
 
     void KitchenPool::createKitchen()
     {
-        _kitchens.emplace_back(_config, _statusMq, _kitchenId++);
+        _kitchens.emplace_back(std::make_unique<Kitchen>(_config, _statusMq, _kitchenId++));
         int pid = fork();
-        _kitchens.back().setPid(pid);
+        _kitchens.back()->setPid(pid);
         if (pid == 0) {
-            _kitchens.back().startKitchen();
+            _kitchens.back()->startKitchen();
             exit(0);
         }
+        LOG_F(INFO, "New kitchen created. PID: %d, ID: %d.", pid, _kitchens.back()->getId());
     }
 
     void KitchenPool::destroyKitchen(int id)
     {
-        std::erase_if(_kitchens, [id](Kitchen& kitchen) {
-            return kitchen.getId() == id;
+        std::erase_if(_kitchens, [id](auto& kitchen) {
+            if (kitchen->getId() != id)
+                return false;
+            LOG_F(INFO, "Destroyed kitchen in pool. PID: %d, ID: %d.",
+                kitchen->getPid(), kitchen->getId());
+            return true;
         });
     }
 
     KitchenPool::~KitchenPool()
     {
         for (auto &i: _kitchens) {
-            kill(i.getPid(), SIGKILL);
+            kill(i->getPid(), SIGKILL);
+            LOG_F(INFO, "Killed kitchen in pool. PID: %d, ID: %d.", i->getPid(), i->getId());
         }
+    }
+
+    std::string KitchenPool::getAllStatus() const
+    {
+        std::string str;
+        if (_kitchens.empty()) {
+            str = "No kitchen are currently in the pool.\n";
+            return str;
+        }
+        for (const auto &item: _kitchens) {
+            kitchenStatus_t s = item->getStatus();
+            str += "Status for kitchen PID: " + std::to_string(item->getPid())
+                   + " ID: " + std::to_string(item->getId()) + "\n"
+                   + "\t Job number: " + std::to_string(s.nbCommands) + "\n"
+                   + "\t Doe: " + std::to_string(s.doe) + "\n"
+                   + "\t Tomato: " + std::to_string(s.tomato) + "\n"
+                   + "\t Ham: " + std::to_string(s.ham) + "\n"
+                   + "\t Gruyere: " + std::to_string(s.gruyere) + "\n"
+                   + "\t Mushrooms: " + std::to_string(s.mushrooms) + "\n"
+                   + "\t Steak: " + std::to_string(s.steak) + "\n"
+                   + "\t Eggplant: " + std::to_string(s.eggplant) + "\n"
+                   + "\t Goat Cheese: " + std::to_string(s.goatCheese) + "\n"
+                   + "\t Chief Love: " + std::to_string(s.chiefLove) + "\n";
+            str += "\n";
+        }
+        return str;
     }
 } // plazza

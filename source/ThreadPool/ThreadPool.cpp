@@ -67,4 +67,9 @@ namespace thread {
             job();
         }
     }
+
+    size_t ThreadPool::getNbJobs() const
+    {
+        return _jobs.size();
+    }
 } // thread

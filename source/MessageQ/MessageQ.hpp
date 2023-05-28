@@ -23,7 +23,7 @@ namespace IPC {
                 }
             };
             ~MessageQ() final {
-                msgctl(_mqId, IPC_RMID, nullptr);
+                //msgctl(_mqId, IPC_RMID, nullptr);
             };
             bool isFilled() final {
                 struct msqid_ds queueInfo{};

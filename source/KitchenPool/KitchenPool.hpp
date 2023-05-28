@@ -22,6 +22,8 @@ namespace plazza {
             void updateKitchenStatus(const kitchenStatus_t &status);
             void sendPizza(const pizzas::IPizza &pizza);
 
+            std::string getAllStatus() const;
+
         private:
             /**
              * @brief Adds a new kitchen
@@ -30,9 +32,9 @@ namespace plazza {
 
             void destroyKitchen(int id);
 
-            std::vector<Kitchen> _kitchens;
+            std::vector<std::unique_ptr<Kitchen>> _kitchens;
             utils::Config _config;
             IPC::MessageQ<kitchenStatus_t> _statusMq;
-            int _kitchenId;
+            int _kitchenId = 1;
     };
 } // plazza

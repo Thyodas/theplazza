@@ -26,6 +26,7 @@ namespace thread {
             void start() override;
             void stop() override;
             void addJob(const std::function<void()> &job) override;
+            size_t getNbJobs() const;
 
         private:
             void threadLoop();

@@ -6,19 +6,33 @@
 */
 
 #include <algorithm>
+#include <chrono>
+
 #include "Kitchen.hpp"
+#include "loguru.hpp"
 
 namespace plazza {
 
     void Kitchen::startKitchen() {
+        _threadPool.start();
+        auto startTime = std::chrono::steady_clock::now();
+
         while (true) {
             checkRefillStock();
-            if (_pizzaMq.isFilled())
-                getPizza();
-            //TODO: tryGetIngredients
-            //TODO: takeIngredients
-
+            if (_pizzaMq.isFilled()) {
+                cookPizza();
+                startTime = std::chrono::steady_clock::now();
+            }
+            auto currentTime = std::chrono::steady_clock::now();
+            std::chrono::duration<double> elapsedSeconds = currentTime - startTime;
+            if (elapsedSeconds.count() >= 5) {
+                LOG_F(INFO, "Kitchen ID: %d wasn't used for 5 seconds.", _id);
+                _isAlive = false;
+                sendStatus();
+                return;
+            }
         }
+
     }
 
     bool Kitchen::tryGetIngredients(const pizzas::IPizza& pizza) const
@@ -36,22 +50,21 @@ namespace plazza {
         sendStatus();
     }
 
-    void Kitchen::getPizza() {
+    void Kitchen::cookPizza() {
         short command;
-//        command = _pizzaMq.receive();
         _pizzaMq >> command;
         auto pizza = _pizzaFactory.unpack(command);
-        std::cout << "\r\rReceived command: " << pizza->getBakeTime() << std::endl << "> " << std::flush;
-        //_commands.push(command);
-    }
-
-    void Kitchen::createNewKitchen(int id) {
-        pid_t pid = fork();
-        if (pid == 0) {
-            _id = id;
-            startKitchen();
-        } else
-            _pids.emplace_back(pid);
+        std::string pizza_name = pizza->getName();
+        double bake_time = pizza->getBakeTime();
+        double time_multiplier = this->_conf.getTimeMultiplier();
+        takeIngredients(*pizza);
+        _threadPool.addJob([pizza_name, time_multiplier, bake_time]() {
+            std::this_thread::sleep_for(
+                std::chrono::milliseconds(static_cast<long long>(time_multiplier * bake_time * 1000))
+            );
+            std::cout << "\r\rPizza " << pizza_name << " is done!" << std::endl << "> " << std::endl;
+            LOG_F(INFO, "Pizza %s is done!", pizza_name.c_str());
+        });
     }
 
     void Kitchen::checkRefillStock() {
@@ -65,8 +78,8 @@ namespace plazza {
 
     kitchenStatus_t Kitchen::getStatus() const {
         kitchenStatus_t status = {
+                .isAlive = _isAlive,
                 .id = _id,
-                .isAlive = true,
                 .doe = _stock.at(pizzas::Doe),
                 .tomato = _stock.at(pizzas::Tomato),
                 .gruyere = _stock.at(pizzas::Gruyere),
@@ -75,13 +88,15 @@ namespace plazza {
                 .steak = _stock.at(pizzas::Steak),
                 .eggplant = _stock.at(pizzas::Eggplant),
                 .goatCheese = _stock.at(pizzas::GoatCheese),
-                .chiefLove = _stock.at(pizzas::ChiefLove)
+                .chiefLove = _stock.at(pizzas::ChiefLove),
+                .nbCommands = _nbCommands
         };
         return status;
     }
 
     void Kitchen::sendStatus()
     {
+        _nbCommands = static_cast<int>(_threadPool.getNbJobs());
         if ((_statusMq << getStatus()) == -1)
             std::cerr << "Error while sending message" << std::endl;
     }
@@ -108,6 +123,7 @@ namespace plazza {
         _stock.at(pizzas::Eggplant) = status.eggplant;
         _stock.at(pizzas::GoatCheese) = status.goatCheese;
         _stock.at(pizzas::ChiefLove) = status.chiefLove;
+        _nbCommands = status.nbCommands;
     }
 
     void Kitchen::setPid(pid_t pid)
@@ -118,5 +134,10 @@ namespace plazza {
     pid_t Kitchen::getPid() const
     {
         return _pid;
+    }
+
+    bool Kitchen::canTakePizza(const pizzas::IPizza &pizza) const
+    {
+        return tryGetIngredients(pizza) && _nbCommands < 2 * _conf.getNbCooksPerKitchen();
     }
 }

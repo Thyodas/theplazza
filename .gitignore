@@ -10,3 +10,5 @@ plazza
 build/
 .DS_Store
 *.pdf
+
+plazza.log

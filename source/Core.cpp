@@ -25,6 +25,12 @@ namespace plazza {
     {
         while (!commands.empty()) {
             command_t command = commands.front();
+            fetchAndUpdateStatus();
+            if (command.type == pizzas::STATUS) {
+                std::cout << _kitchenPool.getAllStatus() << std::endl;
+                commands.pop();
+                continue;
+            }
             for (size_t i = 0; i < command.quantity; ++i) {
                 auto pizza = _pizzaFactory.createPizza(command.type, command.size);
                 fetchAndUpdateStatus();
@@ -37,10 +43,8 @@ namespace plazza {
     void Core::fetchAndUpdateStatus()
     {
         kitchenStatus_t status;
-        std::cout << "fetch" << std::endl;
         while (_statusMq.isFilled()) {
             _statusMq >> status;
-            std::cout << "\r\rNew status from id: " << status.id << std::endl << "> " << std::flush;
             _kitchenPool.updateKitchenStatus(status);
         }
     }

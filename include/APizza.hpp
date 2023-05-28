@@ -36,6 +36,56 @@ namespace pizzas {
             return short(_type << 8 | _size);
         }
 
+        std::string getName() final
+        {
+            std::string str;
+            switch (_type) {
+                case REGINA:
+                    str += "Regina";
+                    break;
+                case MARGARITA:
+                    str += "Margarita";
+                    break;
+                case AMERICANA:
+                    str += "Americana";
+                    break;
+                case FANTASIA:
+                    str += "Fantasia";
+                    break;
+                default:
+                    str += "Unknown Pizza";
+                    break;
+            }
+            str += " ";
+            switch (_size) {
+                case S:
+                    str += "S";
+                    break;
+                case M:
+                    str += "M";
+                    break;
+                case L:
+                    str += "L";
+                    break;
+                case XL:
+                    str += "XL";
+                    break;
+                case XXL:
+                    str += "XXL";
+                    break;
+                default:
+                    str += "Unknown Size";
+                    break;
+            }
+            return str;
+        }
+
+        PizzaType getType() final
+        {
+            return _type;
+        }
+
+
         protected:
             PizzaType _type = PizzaType::REGINA;
             PizzaSize _size = PizzaSize::S;

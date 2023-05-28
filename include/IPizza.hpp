@@ -69,6 +69,10 @@ namespace pizzas {
              * @return short
              */
             virtual short pack() const = 0;
+
+            virtual std::string getName() = 0;
+
+            virtual PizzaType getType() = 0;
     };
 
 }
