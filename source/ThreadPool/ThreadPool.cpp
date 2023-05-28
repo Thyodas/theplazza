@@ -64,12 +64,25 @@ namespace thread {
                 job = _jobs.front();
                 _jobs.pop();
             }
+            _nbThreadWorking_mutex.lock();
+            _nbThreadWorking += 1;
+            _nbThreadWorking_mutex.unlock();
             job();
+            _nbThreadWorking_mutex.lock();
+            _nbThreadWorking -= 1;
+            _nbThreadWorking_mutex.unlock();
         }
     }
 
-    size_t ThreadPool::getNbJobs() const
+    size_t ThreadPool::getNbJobs()
     {
+        thread::UniqueLock lock(_queue_mutex);
         return _jobs.size();
+    }
+
+    size_t ThreadPool::getNbWorking()
+    {
+        thread::UniqueLock lock(_nbThreadWorking_mutex);
+        return _nbThreadWorking;
     }
 } // thread

@@ -35,6 +35,7 @@ namespace plazza {
                 auto pizza = _pizzaFactory.createPizza(command.type, command.size);
                 fetchAndUpdateStatus();
                 _kitchenPool.sendPizza(*pizza);
+                waitAndUpdateStatus();
             }
             commands.pop();
         }
@@ -43,6 +44,16 @@ namespace plazza {
     void Core::fetchAndUpdateStatus()
     {
         kitchenStatus_t status;
+        while (_statusMq.isFilled()) {
+            _statusMq >> status;
+            _kitchenPool.updateKitchenStatus(status);
+        }
+    }
+
+    void Core::waitAndUpdateStatus()
+    {
+        kitchenStatus_t status;
+        while (!_statusMq.isFilled());
         while (_statusMq.isFilled()) {
             _statusMq >> status;
             _kitchenPool.updateKitchenStatus(status);

@@ -32,7 +32,7 @@ namespace plazza {
 
             void destroyKitchen(int id);
 
-            std::vector<std::unique_ptr<Kitchen>> _kitchens;
+            std::vector<std::shared_ptr<Kitchen>> _kitchens;
             utils::Config _config;
             IPC::MessageQ<kitchenStatus_t> _statusMq;
             int _kitchenId = 1;

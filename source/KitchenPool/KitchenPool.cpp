@@ -30,19 +30,32 @@ namespace plazza {
 
     void KitchenPool::sendPizza(const pizzas::IPizza &pizza)
     {
+        std::vector<std::shared_ptr<Kitchen>> available;
+
         for (const auto &item: _kitchens) {
             if (item->canTakePizza(pizza)) {
-                item->sendPizza(pizza);
-                return;
+                available.push_back(item);
             }
         }
-        createKitchen();
-        sendPizza(pizza);
+        if (available.empty()) {
+            createKitchen();
+            sendPizza(pizza);
+            return;
+        }
+
+        auto minCommandsKitchen = *std::min_element(
+            available.begin(), available.end(),
+            [](const std::shared_ptr<Kitchen>& kitchen1, const std::shared_ptr<Kitchen>& kitchen2) {
+                return kitchen1->getStatus().nbCommands < kitchen2->getStatus().nbCommands;
+            }
+        );
+
+        minCommandsKitchen->sendPizza(pizza);
     }
 
     void KitchenPool::createKitchen()
     {
-        _kitchens.emplace_back(std::make_unique<Kitchen>(_config, _statusMq, _kitchenId++));
+        _kitchens.emplace_back(std::make_shared<Kitchen>(_config, _statusMq, _kitchenId++));
         int pid = fork();
         _kitchens.back()->setPid(pid);
         if (pid == 0) {

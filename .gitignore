@@ -12,3 +12,8 @@ build/
 *.pdf
 
 plazza.log
+
+CMakeCache.txt
+
+cmake_install.cmake
+CMakeFiles/

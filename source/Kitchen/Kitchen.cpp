@@ -23,6 +23,9 @@ namespace plazza {
                 cookPizza();
                 startTime = std::chrono::steady_clock::now();
             }
+            if (_threadPool.getNbJobs() > 0 || _threadPool.getNbWorking() > 0) {
+                startTime = std::chrono::steady_clock::now();
+            }
             auto currentTime = std::chrono::steady_clock::now();
             std::chrono::duration<double> elapsedSeconds = currentTime - startTime;
             if (elapsedSeconds.count() >= 5) {
@@ -57,13 +60,18 @@ namespace plazza {
         std::string pizza_name = pizza->getName();
         double bake_time = pizza->getBakeTime();
         double time_multiplier = this->_conf.getTimeMultiplier();
+        int kitchenId = _id;
         takeIngredients(*pizza);
-        _threadPool.addJob([pizza_name, time_multiplier, bake_time]() {
+        std::cout << "\r\rKitchen ID: " << kitchenId << ": Pizza " << pizza_name << " is cooking!"
+                  << std::endl << "> " << std::flush;
+        LOG_F(INFO, "Kitchen ID: %d: Pizza %s is cooking!", kitchenId, pizza_name.c_str());
+        _threadPool.addJob([kitchenId, pizza_name, time_multiplier, bake_time]() {
             std::this_thread::sleep_for(
                 std::chrono::milliseconds(static_cast<long long>(time_multiplier * bake_time * 1000))
             );
-            std::cout << "\r\rPizza " << pizza_name << " is done!" << std::endl << "> " << std::flush;
-            LOG_F(INFO, "Pizza %s is done!", pizza_name.c_str());
+            std::cout << "\r\rKitchen ID: " << kitchenId << ": Pizza " << pizza_name << " is done!"
+                << std::endl << "> " << std::flush;
+            LOG_F(INFO, "Kitchen ID: %d: Pizza %s is done!", kitchenId, pizza_name.c_str());
         });
     }
 

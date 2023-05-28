@@ -39,6 +39,8 @@ namespace plazza {
 
             void fetchAndUpdateStatus();
 
+            void waitAndUpdateStatus();
+
             utils::Config _conf;
             Shell shell;
             IPC::MessageQ<kitchenStatus_t> _statusMq;

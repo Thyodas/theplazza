@@ -26,12 +26,15 @@ namespace thread {
             void start() override;
             void stop() override;
             void addJob(const std::function<void()> &job) override;
-            size_t getNbJobs() const;
+            size_t getNbJobs();
+            size_t getNbWorking();
 
         private:
             void threadLoop();
 
             size_t _nbThreads;
+            thread::Mutex _nbThreadWorking_mutex;
+            size_t _nbThreadWorking = 0;
             bool _should_terminate = false;
             thread::Mutex _queue_mutex;
             thread::ConditionVariable _mutex_condition{};
