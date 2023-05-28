@@ -74,9 +74,9 @@ namespace utils {
                 if (!isFilled)
                     throw std::runtime_error("Config is not filled");
                 try {
-                    if ((timeMultiplier = std::stof(av[1])) < 0)
+                    if ((timeMultiplier = std::stof(av[1])) <= 0)
                         throw std::runtime_error("Invalid argument");
-                    if ((nbCooksPerKitchen = std::stoi(av[2])) <= 0)
+                    if ((nbCooksPerKitchen = std::stoi(av[2])) < 0)
                         throw std::runtime_error("Invalid arguments");
                     if ((refillIngredient = std::stoi(av[3])) < 0)
                         throw std::runtime_error("Invalid argument");
