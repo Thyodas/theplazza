@@ -28,9 +28,7 @@ namespace IPC {
             bool isFilled() final {
                 struct msqid_ds queueInfo{};
                 if (msgctl(_mqId, IPC_STAT, &queueInfo) == -1) {
-                    //TODO: throw proprement
-                    std::cerr << "Error retrieving information about the message queue." << std::endl;
-                    return false;
+                    throw std::runtime_error("Error retrieving information about the message queue.");
                 }
                 return queueInfo.msg_qnum != 0;
             }
@@ -38,9 +36,7 @@ namespace IPC {
             friend int operator<<(const MessageQ<T> &q, const T &command) {
                 struct Message<T> msg = {1, command};
                 if (msgsnd(q._mqId, &msg, sizeof(T), 0) == -1) {
-                    //TODO: throw proprement
-                    std::cerr << "Error while sending message" << std::endl;
-                    return -1;
+                    throw std::runtime_error("Error while sending message");
                 }
                 return 0;
             };
@@ -48,9 +44,7 @@ namespace IPC {
             friend void operator>>(const MessageQ<T> &q, T &command) {
                 struct Message<T> msg{};
                 if (msgrcv(q._mqId, &msg, sizeof(T), 1, 0) == -1) {
-                    //TODO: throw proprement
-                    std::cerr << "Error while receiving message" << std::endl;
-                    command = T{};
+                    throw std::runtime_error("Error while receiving message");
                 }
                 command = msg.command;
             };
@@ -58,18 +52,14 @@ namespace IPC {
             int send(const T &command) final {
                 struct Message<T> msg = {1, command};
                 if (msgsnd(_mqId, &msg, sizeof(T), 0) == -1) {
-                    //TODO: throw proprement
-                    std::cerr << "Error while sending message" << std::endl;
-                    return -1;
+                    throw std::runtime_error("Error while sending message");
                 }
                 return 0;
             };
             T receive() final {
                 struct Message<T> msg{};
                 if (msgrcv(_mqId, &msg, sizeof(T), 1, 0) == -1) {
-                    //TODO: throw proprement
-                    std::cerr << "Error while receiving message" << std::endl;
-                    return T{};
+                    throw std::runtime_error("Error while receiving message");
                 }
                 return msg.command;
             };

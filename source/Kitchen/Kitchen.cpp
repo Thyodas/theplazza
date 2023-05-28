@@ -77,20 +77,19 @@ namespace plazza {
     }
 
     kitchenStatus_t Kitchen::getStatus() const {
-        kitchenStatus_t status = {
-                .isAlive = _isAlive,
-                .id = _id,
-                .doe = _stock.at(pizzas::Doe),
-                .tomato = _stock.at(pizzas::Tomato),
-                .gruyere = _stock.at(pizzas::Gruyere),
-                .ham = _stock.at(pizzas::Ham),
-                .mushrooms = _stock.at(pizzas::Mushrooms),
-                .steak = _stock.at(pizzas::Steak),
-                .eggplant = _stock.at(pizzas::Eggplant),
-                .goatCheese = _stock.at(pizzas::GoatCheese),
-                .chiefLove = _stock.at(pizzas::ChiefLove),
-                .nbCommands = _nbCommands
-        };
+        kitchenStatus_t status{};
+        status.isAlive = _isAlive;
+        status.id = _id;
+        status.doe = _stock.at(pizzas::Doe);
+        status.tomato = _stock.at(pizzas::Tomato);
+        status.gruyere = _stock.at(pizzas::Gruyere);
+        status.ham = _stock.at(pizzas::Ham);
+        status.mushrooms = _stock.at(pizzas::Mushrooms);
+        status.steak = _stock.at(pizzas::Steak);
+        status.eggplant = _stock.at(pizzas::Eggplant);
+        status.goatCheese = _stock.at(pizzas::GoatCheese);
+        status.chiefLove = _stock.at(pizzas::ChiefLove);
+        status.nbCommands = _nbCommands;
         return status;
     }
 
