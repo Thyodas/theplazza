@@ -16,7 +16,8 @@ namespace plazza {
     {
         createKitchen();
         while (true) {
-            shell.extractCommand();
+            if (shell.extractCommand() == -1)
+                return;
             sendCommands(shell.getCommands());
         }
     }

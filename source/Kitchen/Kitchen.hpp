@@ -41,7 +41,11 @@ namespace plazza {
             _conf(conf), _nbCooks(nbCooks), _pizzaMq(pizzaMq), _statusMq(statusMq) {
                 initStock();
             };
-            ~Kitchen() = default;
+            ~Kitchen() {
+                for (auto &pid : _pids) {
+                    kill(pid, SIGKILL);
+                }
+            };
 
             /**
              * @brief Starts the kitchen
@@ -85,6 +89,7 @@ namespace plazza {
             int _id = 0;
             std::queue<command_t> _commands;
             std::chrono::time_point<std::chrono::system_clock> _lastRefill;
+            std::vector<pid_t> _pids;
 
 
             //TODO: documentation

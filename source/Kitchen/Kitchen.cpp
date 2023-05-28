@@ -39,6 +39,7 @@ namespace plazza {
         plazza::command_t command;
 //        command = _pizzaMq.receive();
         _pizzaMq >> command;
+        std::cout << "Received command: " << command.quantity << std::endl;
         _commands.push(command);
     }
 
@@ -47,7 +48,8 @@ namespace plazza {
         if (pid == 0) {
             _id = id;
             startKitchen();
-        }
+        } else
+            _pids.emplace_back(pid);
     }
 
     void Kitchen::checkRefillStock() {

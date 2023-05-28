@@ -58,7 +58,7 @@ namespace plazza {
              * the input parsed before
              * This function should be called after getInput
              */
-            void extractCommand();
+            int extractCommand();
             /**
              * @brief Get the Commands object
              *
@@ -73,7 +73,7 @@ namespace plazza {
              *
              * @return std::vector<std::string>&
              */
-            std::vector<std::string> getInput();
+            static std::vector<std::string> getInput();
 
             std::queue<command_t> _commands;
     };
