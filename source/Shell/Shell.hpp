@@ -24,7 +24,7 @@ namespace plazza {
     typedef struct command_s {
         command_s(pizzas::PizzaType type, pizzas::PizzaSize size, size_t quantity)
             : type(type), size(size), quantity(quantity) {};
-        command_s() : type(pizzas::UNDEFINED), size(pizzas::S), quantity(0) {}
+        command_s() : type(pizzas::STATUS), size(pizzas::S), quantity(0) {}
         void print() const { std::cout << "Type: " << type << " Size: " << size << " Quantity: " << quantity << std::endl; }
         pizzas::PizzaType type;
         pizzas::PizzaSize size;

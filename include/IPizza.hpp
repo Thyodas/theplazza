@@ -30,7 +30,7 @@ namespace pizzas {
         MARGARITA = 2,
         AMERICANA = 4,
         FANTASIA = 8,
-        UNDEFINED = 16
+        STATUS = 16
     };
 
     //Enum containing all the pizza sizes

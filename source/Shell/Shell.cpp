@@ -41,6 +41,13 @@ namespace plazza {
             for (const auto & i : inputs) {
                 command_t command;
                 std::smatch smash;
+                if (i == "status") {
+                    command.type = pizzas::STATUS;
+                    command.size = pizzas::S;
+                    command.quantity = 0;
+                    _commands.push(command);
+                    continue;
+                }
                 if (std::regex_search(i, smash, regex)) {
                     command.type = _typeMap.at(smash[1]);
                     command.size = _sizeMap.at(smash[2]);
