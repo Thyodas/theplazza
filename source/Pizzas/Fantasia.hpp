@@ -12,19 +12,18 @@
 namespace pizzas {
     class Fantasia final : public APizza {
         public:
-            Fantasia() = default;
-            Fantasia(const PizzaSize &size) : APizza(size) {};
-            ~Fantasia() final = default;
-
-        private:
-            PizzaType _type = PizzaType::FANTASIA;
-            std::vector<Ingredients_e> _ingredients = {
-                Doe,
-                Tomato,
-                Eggplant,
-                GoatCheese,
-                ChiefLove
+            Fantasia() = delete;
+            Fantasia(const PizzaSize &size) : APizza(size) {
+                _type = PizzaType::FANTASIA;
+                _ingredients = {
+                    Doe,
+                    Tomato,
+                    Eggplant,
+                    GoatCheese,
+                    ChiefLove
+                };
+                _bakeTime = 4;
             };
-            double _bakeTime = 4;
+            ~Fantasia() final = default;
     };
 }

@@ -11,17 +11,17 @@
 namespace pizzas {
     class Margarita final : public APizza {
         public:
-            Margarita() = default;
-            Margarita(const PizzaSize &size) : APizza(size) {};
-            ~Margarita() final = default;
-
-        private:
-            PizzaType _type = PizzaType::MARGARITA;
-            std::vector<Ingredients_e> _ingredients = {
-                Doe,
-                Tomato,
-                Gruyere
+            Margarita() = delete;
+            explicit Margarita(const PizzaSize &size)
+            : APizza(size) {
+                _type = PizzaType::MARGARITA;
+                _ingredients = {
+                    Doe,
+                    Tomato,
+                    Gruyere
+                };
+                _bakeTime = 1;
             };
-            double _bakeTime = 1;
+            ~Margarita() final = default;
     };
 }

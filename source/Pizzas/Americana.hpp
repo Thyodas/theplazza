@@ -12,18 +12,17 @@
 namespace pizzas {
     class Americana final : public APizza {
         public:
-            Americana() = default;
-            Americana(const PizzaSize &size) : APizza(size) {};
-            ~Americana() final = default;
-
-        private:
-            PizzaType _type = PizzaType::AMERICANA;
-            std::vector<Ingredients_e> _ingredients = {
-                Doe,
-                Tomato,
-                Gruyere,
-                Steak
+            Americana() = delete;
+            explicit Americana(const PizzaSize &size) : APizza(size) {
+                _type = PizzaType::AMERICANA;
+                _ingredients = {
+                    Doe,
+                    Tomato,
+                    Gruyere,
+                    Steak
+                };
+                _bakeTime = 2;
             };
-            double _bakeTime = 2;
+            ~Americana() final = default;
     };
 }

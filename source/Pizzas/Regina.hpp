@@ -11,19 +11,18 @@
 namespace pizzas {
     class Regina final : public APizza {
         public:
-            Regina() = default;
-            Regina(const PizzaSize &size) : APizza(size) {};
-            ~Regina() final = default;
-
-        private:
-            PizzaType _type = PizzaType::REGINA;
-            std::vector<Ingredients_e> _ingredients = {
-                Doe,
-                Tomato,
-                Gruyere,
-                Ham,
-                Mushrooms
+            Regina() = delete;
+            explicit Regina(const PizzaSize &size) : APizza(size) {
+                _type = PizzaType::REGINA;
+                _ingredients = {
+                    Doe,
+                    Tomato,
+                    Gruyere,
+                    Ham,
+                    Mushrooms
+                };
+                _bakeTime = 2;
             };
-            double _bakeTime = 2;
+            ~Regina() final = default;
     };
 }

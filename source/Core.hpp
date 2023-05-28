@@ -15,6 +15,7 @@
 #include "Config/Config.hpp"
 #include "Shell/Shell.hpp"
 #include "MessageQ/MessageQ.hpp"
+#include "KitchenPool/KitchenPool.hpp"
 
 namespace plazza {
 
@@ -28,26 +29,21 @@ namespace plazza {
             void mainLoop();
 
         private:
+
             /**
              * @brief Function called when all the commands have been parsed
              *
              * @param commands
              */
             void sendCommands(std::queue<command_t> commands);
-            /**
-             * @brief Adds a new kitchen
-             */
-            void createKitchen();
-            /**
-             * @brief Kills all the kitchens
-             * @return true if all the kitchens have been killed, false otherwise
-             */
-//            void killAllKitchens();
+
+            void fetchAndUpdateStatus();
+
             utils::Config _conf;
             Shell shell;
-            IPC::MessageQ<command_t> _pizzaMq;
             IPC::MessageQ<kitchenStatus_t> _statusMq;
-            Kitchen _kitchen;
+            KitchenPool _kitchenPool;
             int _lastKitchenId = 0;
+            pizzas::PizzaFactory _pizzaFactory;
     };
 }

@@ -9,12 +9,11 @@
 
 namespace plazza {
 
-    Core::Core(utils::Config conf) : _conf(conf), shell(), _pizzaMq('A'), _statusMq('B'),
-                        _kitchen(_conf, _pizzaMq, _statusMq, _conf.getNbCooksPerKitchen()) {}
+    Core::Core(utils::Config conf)
+    : _conf(conf), shell(), _statusMq(0), _kitchenPool(conf, _statusMq) {}
 
     void Core::mainLoop()
     {
-        createKitchen();
         while (true) {
             if (shell.extractCommand() == -1)
                 return;
@@ -26,26 +25,23 @@ namespace plazza {
     {
         while (!commands.empty()) {
             command_t command = commands.front();
+            for (size_t i = 0; i < command.quantity; ++i) {
+                auto pizza = _pizzaFactory.createPizza(command.type, command.size);
+                fetchAndUpdateStatus();
+                _kitchenPool.sendPizza(*pizza);
+            }
             commands.pop();
-            if ((_pizzaMq << command) == -1)
-                std::cerr << "Error while sending message" << std::endl;
-//            if (_pizzaMq.send(command) == -1)
-//                std::cerr << "Error while sending message" << std::endl;
         }
     }
 
-    void Core::createKitchen()
+    void Core::fetchAndUpdateStatus()
     {
-        _kitchen.createNewKitchen(_lastKitchenId);
-        ++_lastKitchenId;
+        kitchenStatus_t status;
+        std::cout << "fetch" << std::endl;
+        while (_statusMq.isFilled()) {
+            _statusMq >> status;
+            std::cout << "\r\rNew status from id: " << status.id << std::endl << "> " << std::flush;
+            _kitchenPool.updateKitchenStatus(status);
+        }
     }
-//    void Core::killAllKitchens()
-//    {
-//        for (auto i: _kitchens) {
-//            if (kill(i, SIGKILL) == -1)
-//                std::cerr << "Error while killing kitchen, pid: " << i << std::endl;
-//        }
-//    }
-
 }
-

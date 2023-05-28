@@ -37,15 +37,14 @@ namespace plazza {
      */
     class Kitchen {
         public:
-            Kitchen(utils::Config conf, const IPC::MessageQ<command_t> &pizzaMq, const IPC::MessageQ<kitchenStatus_t> &statusMq, int nbCooks = 0) : _pizzaFactory(),
-            _conf(conf), _nbCooks(nbCooks), _pizzaMq(pizzaMq), _statusMq(statusMq) {
+            Kitchen(const Kitchen &kitchen)
+            : _pizzaFactory(), _conf(kitchen._conf),
+            _pizzaMq(kitchen._pizzaMq), _statusMq(kitchen._statusMq) {}
+            Kitchen(utils::Config conf, IPC::MessageQ<kitchenStatus_t> &statusMq, int id)
+            : _pizzaFactory(), _conf(conf), _pizzaMq(id), _statusMq(statusMq), _id(id) {
                 initStock();
             };
-            ~Kitchen() {
-                for (auto &pid : _pids) {
-                    kill(pid, SIGKILL);
-                }
-            };
+            ~Kitchen() = default;
 
             /**
              * @brief Starts the kitchen
@@ -60,14 +59,8 @@ namespace plazza {
              */
             bool tryGetIngredients(const pizzas::IPizza& pizza) const;
 
-            /**
-             * @brief Remove the ingredient of the pizza from the stock
-             * @param pizza The pizza to take the ingredients from
-             */
-            void takeIngredients(const pizzas::IPizza& pizza);
 
-            //TODO: documentation
-            void getCommands();
+            void sendPizza(const pizzas::IPizza& pizza) const;
 
             //TODO: documentation
             void createNewKitchen(int id);
@@ -75,22 +68,37 @@ namespace plazza {
             //TODO: documentation
             kitchenStatus_t getStatus() const;
 
-            //TODO: documentation
-            void sendStatus();
+            void updateStatus(const kitchenStatus_t &status);
+
+            int getId() const;
+            void setPid(pid_t pid);
+            pid_t getPid() const;
+
 
         private:
             pizzas::PizzaFactory _pizzaFactory;
             utils::Config _conf;
             std::map<pizzas::Ingredients_e, int> _stock;
-            std::vector<Cook> _cooks;
-            int _nbCooks = 0;
-            IPC::MessageQ<command_t> _pizzaMq;
+            //std::vector<Cook> _cooks;
+            IPC::MessageQ<short> _pizzaMq;
             IPC::MessageQ<kitchenStatus_t> _statusMq;
             int _id = 0;
+            pid_t _pid;
             std::queue<command_t> _commands;
             std::chrono::time_point<std::chrono::system_clock> _lastRefill;
             std::vector<pid_t> _pids;
 
+
+            /**
+             * @brief Remove the ingredient of the pizza from the stock
+             * @param pizza The pizza to take the ingredients from
+             */
+            void takeIngredients(const pizzas::IPizza& pizza);
+
+            void sendStatus();
+
+            //TODO: documentation
+            void getPizza();
 
             //TODO: documentation
             void checkRefillStock();

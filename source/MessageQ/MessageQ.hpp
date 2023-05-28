@@ -15,7 +15,7 @@ namespace IPC {
     template <typename T>
     class MessageQ final : public IMessageQ<T> {
         public:
-            MessageQ(char projId) {
+            MessageQ(int projId) {
                 key_t key = ftok(".", projId);
                 _mqId = msgget(key, IPC_CREAT | 0666);
                 if (_mqId == -1) {

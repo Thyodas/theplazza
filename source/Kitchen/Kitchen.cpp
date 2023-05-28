@@ -14,10 +14,10 @@ namespace plazza {
         while (true) {
             checkRefillStock();
             if (_pizzaMq.isFilled())
-                getCommands();
+                getPizza();
             //TODO: tryGetIngredients
             //TODO: takeIngredients
-            sendStatus();
+
         }
     }
 
@@ -33,14 +33,16 @@ namespace plazza {
         for (auto &ingredient : pizza.getIngredients()) {
             _stock.at(ingredient) -= 1;
         }
+        sendStatus();
     }
 
-    void Kitchen::getCommands() {
-        plazza::command_t command;
+    void Kitchen::getPizza() {
+        short command;
 //        command = _pizzaMq.receive();
         _pizzaMq >> command;
-        std::cout << "Received command: " << command.quantity << std::endl;
-        _commands.push(command);
+        auto pizza = _pizzaFactory.unpack(command);
+        std::cout << "\r\rReceived command: " << pizza->getBakeTime() << std::endl << "> " << std::flush;
+        //_commands.push(command);
     }
 
     void Kitchen::createNewKitchen(int id) {
@@ -57,6 +59,7 @@ namespace plazza {
         if (actualTime - _lastRefill > std::chrono::milliseconds(static_cast<long long>(_conf.getRefillIngredient()))) {
             refillStock();
             _lastRefill = actualTime;
+            sendStatus();
         }
     }
 
@@ -83,4 +86,37 @@ namespace plazza {
             std::cerr << "Error while sending message" << std::endl;
     }
 
+    void Kitchen::sendPizza(const pizzas::IPizza &pizza) const
+    {
+        if ((_pizzaMq << pizza.pack()) == -1)
+            std::cerr << "Error while sending message" << std::endl;
+    }
+
+    int Kitchen::getId() const
+    {
+        return _id;
+    }
+
+    void Kitchen::updateStatus(const kitchenStatus_t &status)
+    {
+        _stock.at(pizzas::Doe) = status.doe;
+        _stock.at(pizzas::Tomato) = status.tomato;
+        _stock.at(pizzas::Gruyere) = status.gruyere;
+        _stock.at(pizzas::Ham) = status.ham;
+        _stock.at(pizzas::Mushrooms) = status.mushrooms;
+        _stock.at(pizzas::Steak) = status.steak;
+        _stock.at(pizzas::Eggplant) = status.eggplant;
+        _stock.at(pizzas::GoatCheese) = status.goatCheese;
+        _stock.at(pizzas::ChiefLove) = status.chiefLove;
+    }
+
+    void Kitchen::setPid(pid_t pid)
+    {
+        _pid = pid;
+    }
+
+    pid_t Kitchen::getPid() const
+    {
+        return _pid;
+    }
 }
