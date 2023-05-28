@@ -37,7 +37,8 @@ namespace plazza {
 
     void Kitchen::getCommands() {
         plazza::command_t command;
-        command = _pizzaMq.receive();
+//        command = _pizzaMq.receive();
+        _pizzaMq >> command;
         _commands.push(command);
     }
 
@@ -76,7 +77,7 @@ namespace plazza {
 
     void Kitchen::sendStatus()
     {
-        if (_statusMq.send(getStatus()))
+        if ((_statusMq << getStatus()) == -1)
             std::cerr << "Error while sending message" << std::endl;
     }
 

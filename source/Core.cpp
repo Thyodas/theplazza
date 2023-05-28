@@ -26,8 +26,10 @@ namespace plazza {
         while (!commands.empty()) {
             command_t command = commands.front();
             commands.pop();
-            if (_pizzaMq.send(command) == -1)
+            if ((_pizzaMq << command) == -1)
                 std::cerr << "Error while sending message" << std::endl;
+//            if (_pizzaMq.send(command) == -1)
+//                std::cerr << "Error while sending message" << std::endl;
         }
     }
 
